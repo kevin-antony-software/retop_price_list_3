@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "979415018529",
+    "project_id": "retop-price-list-3",
+    "storage_bucket": "retop-price-list-3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979415018529:android:ec878b6b0bace13c428760",
+        "android_client_info": {
+          "package_name": "com.kevin.antony.retop_price_list_3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "979415018529-v2fgncnpgjddl0njqn36f3jr6c8t9obs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9hESXb9MwQuuidxbf9jVeS9i9T6uhCEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "979415018529-v2fgncnpgjddl0njqn36f3jr6c8t9obs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
