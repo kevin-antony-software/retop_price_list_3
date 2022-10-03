@@ -43,10 +43,10 @@ class _PriceListState extends State<PriceList> {
         //body: DisplayPrices(),
         body: TabBarView(
           children: [
-            DisplayPrices("MMA"),
-            DisplayPrices("TIG"),
-            DisplayPrices("MIG"),
-            DisplayPrices("CUT"),
+            DisplayPrices("Machine"),
+            DisplayPrices("Torch"),
+            DisplayPrices("TorchParts"),
+            DisplayPrices("Consumables"),
           ],
         ),
         // bottomNavigationBar: BottomNavigationBar(

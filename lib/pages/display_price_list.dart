@@ -23,24 +23,24 @@ Stream<List<Machine>> fetchMachines(
 }
 
 class DisplayPrices extends StatefulWidget {
-  const DisplayPrices(String this.machineType);
+  const DisplayPrices(String this.categoryType);
 
   // final productTypeToPass;
-  final machineType;
+  final categoryType;
 
   @override
-  State<DisplayPrices> createState() => _DisplayPricesState(machineType);
+  State<DisplayPrices> createState() => _DisplayPricesState(categoryType);
 }
 
 class _DisplayPricesState extends State<DisplayPrices> {
   late Timer timer;
   int counter = 0;
 
-  final machineType;
+  final categoryType;
   //final productTypeToPass;
-  _DisplayPricesState(this.machineType);
+  _DisplayPricesState(this.categoryType);
   int _selectedIndex = 0;
-  String ProductTypeToPass = "Machine";
+  String ProductTypeToPass = "MMA";
 
   @override
   void initState() {
@@ -65,10 +65,16 @@ class _DisplayPricesState extends State<DisplayPrices> {
     setState(() {
       _selectedIndex = index;
       if (index == 0) {
-        ProductTypeToPass = "Machine";
+        ProductTypeToPass = "MMA";
+        print(ProductTypeToPass);
+      } else if (index == 1) {
+        ProductTypeToPass = "MIG";
+        print(ProductTypeToPass);
+      } else if (index == 2) {
+        ProductTypeToPass = "TIG";
         print(ProductTypeToPass);
       } else {
-        ProductTypeToPass = "Torch";
+        ProductTypeToPass = "PLASMA";
         print(ProductTypeToPass);
       }
     });
@@ -87,7 +93,7 @@ class _DisplayPricesState extends State<DisplayPrices> {
           final prices = <Machine>[];
 
           for (var item in snapshot.data!) {
-            if (item.Machinetype == machineType) {
+            if (item.Machinetype == categoryType) {
               if (item.productType == ProductTypeToPass) {
                 prices.add(item);
               }
