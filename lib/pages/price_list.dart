@@ -11,22 +11,8 @@ class PriceList extends StatefulWidget {
 }
 
 class _PriceListState extends State<PriceList> {
-  int _selectedIndex = 0;
   String ProductTypeToPass = "Machine";
   String WeldingType = "MMA";
-
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex = index;
-  //     if (index == 0) {
-  //       ProductTypeToPass = "Machine";
-  //       print(ProductTypeToPass);
-  //     } else {
-  //       ProductTypeToPass = "Torch";
-  //       print(ProductTypeToPass);
-  //     }
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +22,10 @@ class _PriceListState extends State<PriceList> {
         appBar: AppBar(
           bottom: const TabBar(
             tabs: [
-              Tab(text: 'ARC'),
-              Tab(text: 'TIG'),
-              Tab(text: 'MIG'),
-              Tab(text: 'CUT'),
+              Tab(text: 'Machine'),
+              Tab(text: 'Torch'),
+              Tab(text: 'Torch Parts'),
+              Tab(text: 'Consumables'),
             ],
           ),
           automaticallyImplyLeading: false,

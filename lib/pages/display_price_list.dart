@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:retop_price_list_3/my_arc_icons_icons.dart';
 
 import '../controller/machine.dart';
 
@@ -75,10 +76,6 @@ class _DisplayPricesState extends State<DisplayPrices> {
 
   @override
   Widget build(BuildContext context) {
-    // return FutureBuilder<List<Machine>>(
-    //   future: fetchMachines(http.Client()),
-    //print(productTypeToPass);
-
     return StreamBuilder(
       stream: fetchMachines(http.Client(), Duration(seconds: 1)),
       builder: (BuildContext context, AsyncSnapshot<List<Machine>> snapshot) {
@@ -116,21 +113,21 @@ class _DisplayPricesState extends State<DisplayPrices> {
             bottomNavigationBar: BottomNavigationBar(
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Machine',
+                    icon: Icon(MyArcIcons.arcicon),
+                    label: 'MMA',
                     backgroundColor: Colors.green),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.search),
-                    label: 'Torch',
+                    icon: Icon(MyArcIcons.migicon),
+                    label: 'MIG',
                     backgroundColor: Colors.yellow),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'Torch Parts',
+                  icon: Icon(MyArcIcons.tigicon),
+                  label: 'TIG',
                   backgroundColor: Colors.blue,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'Consumables',
+                  icon: Icon(MyArcIcons.plasmaicon),
+                  label: 'PLASMA',
                   backgroundColor: Colors.blue,
                 ),
               ],
