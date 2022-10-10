@@ -1,14 +1,14 @@
 class Machine {
   final String machineName;
   final int price;
-  final String Machinetype;
+  final String weldingType;
   final String imageLink;
   final String productType;
 
   const Machine({
     required this.machineName,
     required this.price,
-    required this.Machinetype,
+    required this.weldingType,
     required this.imageLink,
     required this.productType,
   });
@@ -17,7 +17,7 @@ class Machine {
     return Machine(
       machineName: json['ItemName'] as String,
       price: json['Price'] as int,
-      Machinetype: json['type'] as String,
+      weldingType: json['Weldingtype'] as String,
       imageLink: json['link'] as String,
       productType: json['ItemType'] as String,
     );

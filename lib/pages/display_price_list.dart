@@ -1,51 +1,30 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:expandable_group/expandable_group.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:retop_price_list_3/my_arc_icons_icons.dart';
 
+import '../controller/access_data.dart';
 import '../controller/machine.dart';
 
-List<Machine> parseMachines(String responseBody) {
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-  return parsed.map<Machine>((json) => Machine.fromJson(json)).toList();
-}
-
-Stream<List<Machine>> fetchMachines(
-  http.Client client,
-  Duration refreshTime,
-) async* {
-  await Future.delayed(refreshTime);
-  final response = await client
-      .get(Uri.parse('https://kevin-antony.com/jsonFiles/csvjson.json'));
-  yield parseMachines(response.body);
-}
-
 class DisplayPrices extends StatefulWidget {
-  const DisplayPrices(String this.categoryType);
-
-  // final productTypeToPass;
-  final categoryType;
+  const DisplayPrices(this.weldingType, {super.key});
+  final String weldingType;
 
   @override
-  State<DisplayPrices> createState() => _DisplayPricesState(categoryType);
+  State<DisplayPrices> createState() => _DisplayPricesState();
 }
 
 class _DisplayPricesState extends State<DisplayPrices> {
+  _DisplayPricesState();
+
   late Timer timer;
   int counter = 0;
-
-  final categoryType;
-  //final productTypeToPass;
-  _DisplayPricesState(this.categoryType);
-  int _selectedIndex = 0;
-  String ProductTypeToPass = "MMA";
 
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 300), (Timer t) => addValue());
+    timer = Timer.periodic(Duration(seconds: 20), (Timer t) => addValue());
   }
 
   void addValue() {
@@ -60,26 +39,6 @@ class _DisplayPricesState extends State<DisplayPrices> {
     super.dispose();
   }
 
-  //@override
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 0) {
-        ProductTypeToPass = "MMA";
-        print(ProductTypeToPass);
-      } else if (index == 1) {
-        ProductTypeToPass = "MIG";
-        print(ProductTypeToPass);
-      } else if (index == 2) {
-        ProductTypeToPass = "TIG";
-        print(ProductTypeToPass);
-      } else {
-        ProductTypeToPass = "PLASMA";
-        print(ProductTypeToPass);
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -90,59 +49,66 @@ class _DisplayPricesState extends State<DisplayPrices> {
             child: Text('An error has occurred!'),
           );
         } else if (snapshot.hasData) {
-          final prices = <Machine>[];
+          final machines = <Machine>[];
+          final torchSets = <Machine>[];
+          final torchParts = <Machine>[];
+          final consumables = <Machine>[];
 
           for (var item in snapshot.data!) {
-            if (item.Machinetype == categoryType) {
-              if (item.productType == ProductTypeToPass) {
-                prices.add(item);
+            if (item.weldingType == widget.weldingType) {
+              // prices.add(item);
+              switch (item.productType) {
+                case "Machine":
+                  machines.add(item);
+                  break;
+                case "Torch":
+                  torchSets.add(item);
+                  break;
+                case 'TorchParts':
+                  torchParts.add(item);
+                  break;
+                case 'Consumables':
+                  consumables.add(item);
+                  break;
+                default:
+                  machines.add(item);
               }
             }
           }
+          //print(prices.first.machineName);
 
-          return Scaffold(
-            body: ListView.builder(
-              itemCount: prices.length,
-              prototypeItem: ListTile(
-                title: Text("naame of machine"),
+          // print(prices[0].weldingtype);
+          return Column(
+            children: [
+              ExpandableGroup(
+                header: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Machines"),
+                ),
+                items: _buildItems(context, machines),
               ),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(prices[index].machineName),
-                  leading: Image(
-                    image: NetworkImage(prices[index].imageLink),
-                  ),
-                  trailing: Text(prices[index].price.toString()),
-                );
-              },
-            ),
-            bottomNavigationBar: BottomNavigationBar(
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                    icon: Icon(MyArcIcons.arcicon),
-                    label: 'MMA',
-                    backgroundColor: Colors.green),
-                BottomNavigationBarItem(
-                    icon: Icon(MyArcIcons.migicon),
-                    label: 'MIG',
-                    backgroundColor: Colors.yellow),
-                BottomNavigationBarItem(
-                  icon: Icon(MyArcIcons.tigicon),
-                  label: 'TIG',
-                  backgroundColor: Colors.blue,
+              ExpandableGroup(
+                header: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Torch Sets"),
                 ),
-                BottomNavigationBarItem(
-                  icon: Icon(MyArcIcons.plasmaicon),
-                  label: 'PLASMA',
-                  backgroundColor: Colors.blue,
+                items: _buildItems(context, torchSets),
+              ),
+              ExpandableGroup(
+                header: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Torch Parts"),
                 ),
-              ],
-              type: BottomNavigationBarType.fixed,
-              currentIndex: _selectedIndex,
-              selectedItemColor: Colors.black,
-              iconSize: 40,
-              onTap: _onItemTapped,
-            ),
+                items: _buildItems(context, torchParts),
+              ),
+              ExpandableGroup(
+                header: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text("Consumables"),
+                ),
+                items: _buildItems(context, consumables),
+              ),
+            ],
           );
         } else {
           return const Center(
@@ -152,4 +118,14 @@ class _DisplayPricesState extends State<DisplayPrices> {
       },
     );
   }
+
+  List<ListTile> _buildItems(BuildContext context, List<Machine> items) => items
+      .map((e) => ListTile(
+            leading: Image(
+              image: NetworkImage(e.imageLink),
+            ),
+            title: Text(e.machineName),
+            trailing: Text(e.price.toString()),
+          ))
+      .toList();
 }
