@@ -37,16 +37,19 @@ class _PriceListState extends State<PriceList> {
         automaticallyImplyLeading: false,
         title: Text("RETOP PRICE LIST"),
         actions: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue[400],
-            ),
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-            },
-            child: Text(
-              "Log out",
-              style: TextStyle(fontSize: 15),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 6),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue[400],
+              ),
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+              },
+              child: Text(
+                "Log out",
+                style: TextStyle(fontSize: 15),
+              ),
             ),
           ),
         ],
@@ -67,14 +70,16 @@ class _PriceListState extends State<PriceList> {
               label: 'TIG',
               backgroundColor: Colors.blue),
           BottomNavigationBarItem(
-              icon: Icon(MyArcIcons.plasmaicon),
-              label: 'PLASMA',
-              backgroundColor: Colors.blue),
+            icon: Icon(MyArcIcons.plasmaicon),
+            label: 'PLASMA',
+            //backgroundColor: Colors.blue,
+          ),
         ],
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.black,
-        iconSize: 40,
+        elevation: 20,
+        selectedItemColor: Colors.amber[800],
+        iconSize: 30,
         onTap: _onItemTapped,
       ),
     );

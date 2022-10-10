@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:expandable_group/expandable_group.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:retop_price_list_3/pages/product_details.dart';
 
 import '../controller/access_data.dart';
 import '../controller/machine.dart';
@@ -83,28 +85,40 @@ class _DisplayPricesState extends State<DisplayPrices> {
               ExpandableGroup(
                 header: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("Machines"),
+                  child: Text(
+                    "Machines",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
                 items: _buildItems(context, machines),
               ),
               ExpandableGroup(
                 header: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("Torch Sets"),
+                  child: Text(
+                    "Torch Sets",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
                 items: _buildItems(context, torchSets),
               ),
               ExpandableGroup(
                 header: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("Torch Parts"),
+                  child: Text(
+                    "Torch Parts",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
                 items: _buildItems(context, torchParts),
               ),
               ExpandableGroup(
                 header: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("Consumables"),
+                  child: Text(
+                    "Consumables",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
                 items: _buildItems(context, consumables),
               ),
@@ -124,8 +138,38 @@ class _DisplayPricesState extends State<DisplayPrices> {
             leading: Image(
               image: NetworkImage(e.imageLink),
             ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductDetails(
+                    productName: e.machineName,
+                    productPrice: e.price.toString(),
+                    productImage: e.imageLink,
+                  ),
+                ),
+              );
+            },
             title: Text(e.machineName),
-            trailing: Text(e.price.toString()),
+            trailing: RichText(
+              text: TextSpan(
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+                children: <TextSpan>[
+                  const TextSpan(
+                    text: "Rs ",
+                  ),
+                  TextSpan(
+                    text: NumberFormat.currency(locale: 'eu', symbol: '')
+                        .format(e.price)
+                        .toString(),
+                    style: const TextStyle(),
+                  ),
+                ],
+              ),
+            ),
           ))
       .toList();
 }
